@@ -5,7 +5,10 @@ components:
   - name: ubi9-tools
     container:
       image: registry.access.redhat.com/ubi9/nodejs-20:9.7
-      args: ['tail', '-f', '/dev/null']
+      args:
+        - "tail"
+        - "-f"
+        - "/dev/null"
       endpoints:
         - exposure: public
           name: nodejs
@@ -19,7 +22,10 @@ components:
   - name: ubi8-tools
     container:
       image: registry.access.redhat.com/ubi8-micro:latest
-      args: ['tail', '-f', '/dev/null']
+      args:
+        - "tail"
+        - "-f"
+        - "/dev/null"
       memoryLimit: 2Gi
       memoryRequest: 256Mi
       mountSources: true
@@ -95,9 +101,9 @@ commands:
       label: "Stop web application"
       component: ubi9-tools
       commandLine: >-
-          node_server_pids=$(pgrep -fx '.*nodemon (--inspect )?app.js' | tr "\\n" " ") &&
-          echo "Stopping node server with PIDs: ${node_server_pids}" && 
-          kill -15 ${node_server_pids} &>/dev/null && echo 'Done.'
+        node_server_pids=$(pgrep -fx '.*nodemon (--inspect )?app.js' | tr "\\n" " ") &&
+        echo "Stopping node server with PIDs: ${node_server_pids}" && 
+        kill -15 ${node_server_pids} &>/dev/null && echo 'Done.'
       group:
         kind: run
   - id: print-env-variables
@@ -119,12 +125,12 @@ commands:
     exec:
       label: "ubi9 container echo"
       component: ubi9-tools
-      commandLine: "sh -c '. /etc/os-release; echo $PLATFORM_ID'"
+      commandLine: "sh -c 'hostname && . /etc/os-release; echo $PLATFORM_ID'"
   - id: ubi8-tools-version
     exec:
       label: "ubi8 container echo"
       component: ubi8-tools
-      commandLine: "sh -c '. /etc/os-release; echo $PLATFORM_ID'"
+      commandLine: "sh -c 'hostname && . /etc/os-release; echo $PLATFORM_ID'"
   - id: sequential-ubi8-ubi9
     composite:
       label: "Sequential: Check echo ubi8-ubi9"

@@ -125,12 +125,12 @@ commands:
     exec:
       label: "ubi9 container echo"
       component: ubi9-tools
-      commandLine: "sh -c 'hostname && . /etc/os-release; echo $PLATFORM_ID'"
+      commandLine: "sh -c '. /etc/os-release; echo $PLATFORM_ID'"
   - id: ubi8-tools-version
     exec:
       label: "ubi8 container echo"
       component: ubi8-tools
-      commandLine: "sh -c 'hostname && . /etc/os-release; echo $PLATFORM_ID'"
+      commandLine: "sh -c '. /etc/os-release; echo $PLATFORM_ID'"
   - id: sequential-ubi8-ubi9
     composite:
       label: "Sequential: Check echo ubi8-ubi9"

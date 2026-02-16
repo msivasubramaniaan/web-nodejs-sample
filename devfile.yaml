@@ -187,6 +187,13 @@ commands:
         - run-application-watch
         - run-worker
       parallel: true
+  - id: sequential-run-two-apps
+    composite:
+      label: "Sequential: Run app and worker"
+      commands:
+        - run-worker
+        - run-application-watch
+      parallel: false
   - id: check-node-and-install-deps-and-run-app
     composite:
       label: "Check Node.js version => Install deps => Run web app"

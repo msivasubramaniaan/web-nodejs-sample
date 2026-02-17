@@ -8,12 +8,12 @@ function processJob() {
   console.log('Worker processed job #' + jobId);
 
   if (jobId >= 10) {
-  console.log('Reached job limit. Closing worker.');
-  clearInterval(intervalId);
+    console.log('Reached job limit. Closing worker.');
+    clearInterval(intervalId);
 
-  setImmediate(() => process.exit(0));
-}
+    setImmediate(() => process.exit(0));
+  }
 }
 
 console.log('Worker started. Polling every 2s.');
-setInterval(processJob, 2000);
+const intervalId = setInterval(processJob, 2000);

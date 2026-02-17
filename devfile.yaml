@@ -71,7 +71,7 @@ commands:
   - id: run-worker
     exec:
       label: "Run background worker"
-      component: ubi9-tools
+      component: ubi8-tools
       workingDir: ${PROJECT_SOURCE}/app
       commandLine: "node worker.js"
       group:

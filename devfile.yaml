@@ -29,6 +29,14 @@ components:
       memoryLimit: 2Gi
       memoryRequest: 256Mi
       mountSources: true
+  - name: node-runtime
+    container:
+      image: node:20
+      args:
+        - tail
+        - -f
+        - /dev/null
+      mountSources: true
 
 commands:
   - id: install-dependencies
@@ -71,7 +79,7 @@ commands:
   - id: run-worker
     exec:
       label: "Run background worker"
-      component: ubi8-tools
+      component: node-runtime
       workingDir: ${PROJECT_SOURCE}/app
       commandLine: "node worker.js"
       group:

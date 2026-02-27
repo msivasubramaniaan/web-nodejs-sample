@@ -231,3 +231,17 @@ commands:
         - print-env-variables
         - npm-version-node-version
       parallel: true
+  - id: fail-command
+    exec:
+      label: "Intentional Failure"
+      component: ubi9-tools
+      workingDir: ${PROJECT_SOURCE}/app
+      commandLine: "eeeeecho FAIL"
+  - id: sequential-failure-test
+    composite:
+      label: "Sequential: Stop On Failure"
+      commands:
+        - node-version
+        - fail-command
+        - npm-version
+      parallel: false

@@ -1,6 +1,4 @@
 {
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
   "version": "0.2.0",
   "configurations": [
     {
@@ -10,13 +8,50 @@
       "port": 9229
     },
     {
+      "name": "ubi8 container echo",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "sh -c '. /etc/os-release; echo $PLATFORM_ID'"
+    },
+    {
+      "name": "ubi9 container echo",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "sh -c '. /etc/os-release; echo $PLATFORM_ID'"
+    },
+    {
+      "name": "Intentional Failure",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "eeeeecho FAIL"
+    },
+    {
       "name": "Launch Program",
       "type": "node",
       "request": "launch",
       "skipFiles": [
-          "<node_internals>/**"
+        "<node_internals>/**"
       ],
       "program": "${workspaceFolder}/app/app.js"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Sequential: Check echo ubi8-ubi9",
+      "configurations": [
+        "ubi8 container echo",
+        "ubi9 container echo"
+      ],
+      "stopAll": true
+    },
+    {
+      "name": "Sequential: Failure Test",
+      "configurations": [
+        "ubi9 container echo",
+        "Intentional Failure",
+        "ubi8 container echo"
+      ],
+      "stopAll": true
     }
   ]
 }

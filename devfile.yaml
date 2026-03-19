@@ -262,3 +262,26 @@ commands:
         - bg-command
         - after-bg-command
       parallel: false
+  - id: workdir-root
+    exec:
+      label: "Check workingDir - root"
+      component: ubi9-tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: >
+        sh -c 'printf "Actual: %s\nExpected: %s\n" "$PWD" "/projects/web-nodejs-sample"'
+
+  - id: workdir-app
+    exec:
+      label: "Check workingDir - app"
+      component: ubi9-tools
+      workingDir: ${PROJECT_SOURCE}/app
+      commandLine: >
+        sh -c 'printf "Actual: %s\nExpected: %s\n" "$PWD" "/projects/web-nodejs-sample/app"'
+
+  - id: workdir-in-composite
+    composite:
+      label: "Composite: Check workingDir"
+      commands:
+        - workdir-root
+        - workdir-app
+      parallel: false

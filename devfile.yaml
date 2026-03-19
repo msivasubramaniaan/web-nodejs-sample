@@ -245,3 +245,20 @@ commands:
         - fail-command
         - npm-version
       parallel: false
+  - id: bg-command
+    exec:
+      label: "Background Command"
+      component: ubi9-tools
+      commandLine: "sh -c 'echo Start Background Task; sleep 5; echo Complete Background Task' &"
+  - id: after-bg-command
+    exec:
+      label: "NEXT Task after BG Command"
+      component: ubi9-tools
+      commandLine: "sh -c 'sleep 1; echo NEXT Task after BG TASK'"
+  - id: bg-in-composite
+    composite:
+      label: "Background operator stripped"
+      commands:
+        - bg-command
+        - after-bg-command
+      parallel: false

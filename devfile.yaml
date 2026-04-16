@@ -285,3 +285,49 @@ commands:
         - workdir-root
         - workdir-app
       parallel: false
+
+  - id: env-test
+    exec:
+      component: tools
+      workingDir: ${PROJECT_SOURCE}/app
+      env:
+        - name: GOPATH
+          value: ${PROJECT_SOURCE}/.go
+        - name: GOCACHE
+          value: ${PROJECT_SOURCE}/.cache
+      commandLine: echo "GOPATH=$GOPATH GOCACHE=$GOCACHE"
+
+  - id: env-test-2
+    exec:
+      component: tools
+      workingDir: ${PROJECT_SOURCE}/app
+      env:
+        - name: SERVICE
+          value: backend
+      commandLine: echo "SERVICE=$SERVICE"
+
+  - id: env-test-3
+    exec:
+      component: tools
+      workingDir: ${PROJECT_SOURCE}/app
+      env:
+        - name: MODE
+          value: test
+      commandLine: echo "MODE=$MODE"
+
+  - id: env-composite-seq
+    composite:
+      label: "Env Composite Sequential"
+      commands:
+        - env-test
+        - env-test-2
+        - env-test-3
+
+  - id: env-composite-parallel
+    composite:
+      label: "Env Composite Parallel"
+      parallel: true
+      commands:
+        - env-test
+        - env-test-2
+        - env-test-3

@@ -288,32 +288,33 @@ commands:
 
   - id: env-test
     exec:
-      component: tools
+      label: "Check Env Variables"
+      component: ubi8-tools
       workingDir: ${PROJECT_SOURCE}/app
       env:
         - name: GOPATH
           value: ${PROJECT_SOURCE}/.go
         - name: GOCACHE
           value: ${PROJECT_SOURCE}/.cache
-      commandLine: echo "GOPATH=$GOPATH GOCACHE=$GOCACHE"
+      commandLine: "sh -c 'echo ${GOPATH} && echo ${GOCACHE}'"
 
   - id: env-test-2
     exec:
-      component: tools
+      component: ubi8-tools
       workingDir: ${PROJECT_SOURCE}/app
       env:
         - name: SERVICE
           value: backend
-      commandLine: echo "SERVICE=$SERVICE"
+      commandLine: "sh -c 'echo ${SERVICE}'"
 
   - id: env-test-3
     exec:
-      component: tools
+      component: ubi8-tools
       workingDir: ${PROJECT_SOURCE}/app
       env:
         - name: MODE
           value: test
-      commandLine: echo "MODE=$MODE"
+      commandLine: "sh -c 'echo ${MODE}'"
 
   - id: env-composite-seq
     composite:

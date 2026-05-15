@@ -9,6 +9,9 @@ components:
         - "tail"
         - "-f"
         - "/dev/null"
+      env:
+        - name: BUILD_ROOT
+          value: ${PROJECT_SOURCE}/app
       endpoints:
         - exposure: public
           name: nodejs
@@ -332,3 +335,33 @@ commands:
         - env-test
         - env-test-2
         - env-test-3
+   
+  - id: resolve-container-env-var
+    exec:
+      label: "Resolve Container Env Var for workingDir"
+      component: ubi9-tools
+      workingDir: ${BUILD_ROOT}
+      commandLine: "pwd"
+
+  - id: resolve-container-env-var-root
+    exec:
+      label: "Resolve PROJECT_SOURCE for workingDir"
+      component: ubi9-tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: "pwd"
+
+  - id: sequential-workdir-ubi9
+    composite:
+      label: "Sequential: Container Env Var for workingDir"
+      commands:
+        - resolve-container-env-var
+        - resolve-container-env-var-root
+      parallel: false
+
+  - id: parallel-workdir-ubi9
+    composite:
+      label: "Parallel: Container Env Var for workingDir"
+      commands:
+        - resolve-container-env-var
+        - resolve-container-env-var-root
+      parallel: true

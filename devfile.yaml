@@ -40,6 +40,19 @@ components:
         - -f
         - /dev/null
       mountSources: true
+  - name: alpine
+    container:
+      image: alpine:3.20
+      args:
+        - tail
+        - -f
+        - /dev/null
+      memoryLimit: 2Gi
+      memoryRequest: 256Mi
+      mountSources: true
+      env:
+        - name: BUILD_ROOT
+          value: ${PROJECT_SOURCE}/app
 
 commands:
   - id: install-dependencies
@@ -365,3 +378,32 @@ commands:
         - resolve-container-env-var
         - resolve-container-env-var-root
       parallel: true
+
+  - id: show-alpine-build-root
+    exec:
+      component: alpine
+      workingDir: ${BUILD_ROOT}
+      commandLine: |
+        sh -c 'echo BUILD_ROOT=${BUILD_ROOT}; pwd'
+
+  - id: show-alpine-home
+    exec:
+      component: alpine
+      commandLine: |
+        sh -c '
+          echo HOME_BRACED=${HOME};
+          echo HOME_SHELL=$HOME
+        '
+  - id: composite-alpine-sequential
+    composite:
+      parallel: false
+      commands:
+      - show-alpine-build-root
+      - show-alpine-home
+
+  - id: composite-alpine-parallel
+    composite:
+      parallel: true
+      commands:
+      - show-alpine-build-root
+      - show-alpine-home

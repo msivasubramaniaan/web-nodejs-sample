@@ -407,3 +407,39 @@ commands:
       commands:
       - show-alpine-build-root
       - show-alpine-home
+  
+  - exec:
+      label: "Build Go Application"
+      component: runtime
+      env:
+        - name: GOPATH
+          value: /projects/devfile-stack-go/.go
+        - name: GOCACHE
+          value: /projects/devfile-stack-go/.cache
+      commandLine: echo "GOCACHE=$GOCACHE" && go build main.go
+      group:
+        kind: build
+        isDefault: true
+      workingDir: /projects/devfile-stack-go
+    id: build-go-app
+
+  - exec:
+      label: "Test Go Application"
+      component: runtime
+      env:
+        - name: TEST
+          value: "the quote\""
+      commandLine: echo "TEST=$TEST" && echo "------------------" && export
+      group:
+        kind: run
+        isDefault: false
+      workingDir: /projects/devfile-stack-go
+    id: test-go-app
+
+  - id: build-and-test-go-app
+    composite:
+      label: "Build and Test Go Application"
+      commands:
+        - build-go-app
+        - test-go-app
+      parallel: false
